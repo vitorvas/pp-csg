@@ -12,10 +12,59 @@
 I can cite my professor Claudio Esperanca\cite{Esperanca1990}.
 It is also worth citing the Los Alamos White Paper\cite{Spencer2017}.
 
+\section{Introduction (Justification)}
+
+There is no question about the usefulness of Monte Carlo codes to the various
+fields of radiation applications, namely, nuclear physics, nuclear reactors,
+radioprotection, dosis assesment, among many others \cite[applications].
+
+A lot of time and energy were spent in implementing algorithms intend to improve
+many aspects of the physics simulated by these codes, being the most used of
+them MCNP\textregistered \cite{mcnp}, followed by Fluka\cite{fluka} and others, like the more
+recent Serpent\cite{serpent} aimed mostly to criticality and neutron analysis.
+
+The maturity, robustness and aplicability of these codes cannot questioned.
+However, since resources for sofware development are also a limited asset,
+usually these are applied to the physical aspects of the software and
+the usability is usually a neglected aspect of them.
+
+The urgent need for a better form of software interaction related to MCNP
+is well presented by Spencer\cite{Spencer2017}, taking in account a set of gains that
+would be possible by improving the geometry definition for MCNP.
+
+Despite being a much younger software than MCNP, Serpent has at least one limitation
+common to MCNP: the description of the problem's geometry. This affirmation is by no
+means a critic to its input standard, since it has a comprehensive form of geometry
+definition. Nervetheless, this does not mean neither that it cannot be improved.
+
+With that in mind, this paper presents a rather simple - and expectedly expansive -
+graphics user interface aimed to the visualization of Serpent's geometry input
+in 3D. This version generates VTK output files to be read and manipulated by
+the increasely present scientific visualization tool Paraview\cite{paraview}.
+
+\section{Objective}
+
+
 \section{Describe Serpent's geometry (CSG)}
+
+As many Monte Carlo particle simulation codes, Serpent makes use of Computational Solid Geometry (CSG) to
+describe the geometry of the elements being simulated. Serpent calls it universe-based geometry modelling.
+Besides the conventional square and hexagonal lattices used in nuclear reactor simulations, Serpent also
+offers a special geometry type for the simulation of CANDU type reactors and also randomly-dispersed
+particle fuels.
+
+Serpent is the first nuclear reactors Monte Carlo code to natively support CAD and unstructured
+mesh based geometries\cite{serpent-openfoam-mesh}, which are not (yet) in the scope of the implementation presented in this paper.
+
+\subsection{How \textit{Serpent} define geometry?}
+
+
 \section{Features and limitations}
+
 \section{Development (libraries)}
+
 \section{Examples of use}
+
 \section{Conclusions and Future work}
 
 \bibliographystyle{plain}
