@@ -1,6 +1,7 @@
 \documentclass{elsarticle}
 
-\author{Vitor Vasconcelos}
+\author{Vitor Vasconcelos, Andr\'e Campagnole, Daniel Campolina and 
+Graiciany Barros}
 \title{A visualizer for Serpent Nuclear Code geometries}
 
 \begin{document}
@@ -18,23 +19,19 @@ There is no question about the usefulness of Monte Carlo codes to the various
 fields of radiation applications, namely, nuclear physics, nuclear reactors,
 radioprotection, dosis assesment, among many others \cite[applications].
 
-A lot of time and energy were spent in implementing algorithms intend to improve
-many aspects of the physics simulated by these codes, being the most used of
-them MCNP\textregistered \cite{mcnp}, followed by Fluka\cite{fluka} and others, like the more
-recent Serpent\cite{serpent} aimed mostly to criticality and neutron analysis.
+A lot of time and energy were spent implementing algorithms intended to improve
+various aspects of the physics simulated by these codes. The most popular of
+them is MCNP\textregistered \cite{mcnp}, followed by Fluka\cite{fluka} and, more
+recently, Serpent\cite{serpent}. The latter, aimed mostly to criticality and neutron analysis.
 
-The maturity, robustness and aplicability of these codes cannot questioned.
+The maturity, robustness and aplicability of these codes cannot be questioned.
 However, since resources for sofware development are also a limited asset,
-usually these are applied to the physical aspects of the software and
-the usability is usually a neglected aspect of them.
+usually these are applied to add new features concerning mostly the physical aspects of the software and the usability is usually neglected.
 
 The urgent need for a better form of software interaction related to MCNP
-is well presented by Spencer\cite{Spencer2017}, taking in account a set of gains that
-would be possible by improving the geometry definition for MCNP.
+is well presented by Spencer\cite{Spencer2017}, taking in account a set of gains that would emerge simply from the improvement of the way on how geometry definition is done for MCNP.
 
-Despite being a much younger software than MCNP, Serpent has at least one limitation
-common to MCNP: the description of the problem's geometry. This affirmation is by no
-means a critic to its input standard, since it has a comprehensive form of geometry
+Despite being a much younger software than MCNP, Serpent has at least one limitation common to MCNP: the description of the problem's geometry. This affirmation is by no means a criticism to its input standard, since it has a comprehensive form of geometry
 definition. Nervetheless, this does not mean neither that it cannot be improved.
 
 With that in mind, this paper presents a rather simple - and expectedly expansive -
@@ -45,27 +42,55 @@ the increasely present scientific visualization tool Paraview\cite{paraview}.
 \section{Objective}
 
 
-\section{Describe Serpent's geometry (CSG)}
+\section{Geometry in Serpent}
 
 As many Monte Carlo particle simulation codes, Serpent makes use of Computational Solid Geometry (CSG) to
-describe the geometry of the elements being simulated. Serpent calls it universe-based geometry modelling.
-Besides the conventional square and hexagonal lattices used in nuclear reactor simulations, Serpent also
-offers a special geometry type for the simulation of CANDU type reactors and also randomly-dispersed
-particle fuels.
+describe the geometry of the elements being simulated. Serpent calls it: universe-based geometry modelling.
+%Besides the conventional square and hexagonal lattices used in nuclear reactor %simulations, Serpent also
+%offers a special geometry type for the simulation of CANDU type reactors and also randomly-dispersed
+%particle fuels.
 
-Serpent is the first nuclear reactors Monte Carlo code to natively support CAD and unstructured
-mesh based geometries\cite{serpent-openfoam-mesh}, which are not (yet) in the scope of the implementation presented in this paper.
+%Serpent is the first nuclear reactors Monte Carlo code to natively support CAD and %unstructured mesh based geometries\cite{serpent-openfoam-mesh}, which are not 
+%(yet) in the scope of the implementation presented in this paper.
+
+%The building block 
+%of geometry is the cell, which is a region of space delimited by boundary 
+%surfaces. Cells are filled with 
 
 \subsection{How \textit{Serpent} define geometry?}
 
-Serpent has 42 (forty-two) types of surfaces. Their names and the associated
-list of parameters which are used to propertly define them are stored
-in separated data strctures, one holding surfaces names and other keeping
-the parameter list for each surface. These variables are defined in the
-header file \texttt{surface\_types.h}\footnote{It is worth mention
-  that parameters of surfaces are stored in an array of arrays of size
-  two, holding tuples representing the minimum and maximum number of parameters
-  accepted for each surface.}.
+Serpent has a simple yet powerful way of defining geometries. Serpent has 
+surfaces, cells and universes. In Serpent, surfaces can be elementary or 
+derived. Derived surfaces are those formed by two or more elementary surfaces. 
+Serpent offers forty-two (42) different derived surface types \ref{tab:surfaces} for the convenience of the user. Surfaces are numbered to allow identification.
+
+Cells, which can be two or three dimensional, are a delimited part of the space 
+formed by surfaces. Cells have names (or numbers) to identify themselves and 
+each cell belong to a universe. Cells can be said \texttt{void}) if 
+empty, \texttt{outside} if describing a region of space that is not part 
+of the model's geometry of filled by another universe. In the latter case the 
+keyword used is \texttt{fill}.
+
+But a fundamental concept remains open: what is a universe? A universe is a "filling pattern". In other words, a universe is a domain covering the space where it is defined. Despite the awkward definition, a universe allow the geometry to 
+be divided into different separated levels. As a constraint, a universe must 
+cover all space in where it is defined. It is, by default, centred at the 
+origin and can be rotated and translated at the users will in order to allow 
+the construction of complex geometries.
+
+With the concept of universes in mind, is easy to introduce the concept of 
+lattices. Lattices are a special type of universes, which are filled with 
+regular structures of other universes. Serpent has eight type of lattices. 
+Figure \ref{fig:lattice-example} shows a regular lattice [...].
+
+
+%Serpent has 42 (forty-two) types of surfaces. Their names and the associated
+%list of parameters which are used to propertly define them are stored
+%in separated data strctures, one holding surfaces names and other keeping
+%the parameter list for each surface. These variables are defined in the
+%header file \texttt{surface\_types.h}\footnote{It is worth mention
+%  that parameters of surfaces are stored in an array of arrays of size
+%  two, holding tuples representing the minimum and maximum number of parameters
+%  accepted for each surface.}.
 
 % Maybe make a table showing the possible surfaces, theis parameters
 % and a short description (image)
@@ -74,7 +99,7 @@ header file \texttt{surface\_types.h}\footnote{It is worth mention
 
 \section{Development (libraries)}
 
-A candidate toolkit to develop a visualization software for Serpent input 
+The chosen toolkit used to develop a visualization software for Serpent input 
 geometries is the Visualization Tookit (VTK)\cite{vtk}. It is an open-source, 
 freely available software system for, among other applications, visualization of 
 scientific data. In the present case, this data is a set of geometrical 
