@@ -56,6 +56,27 @@ the increasely present scientific visualization tool Paraview\cite{paraview}.
 \section{Objective}
 
 
+\section{CSG on nuclear codes}
+
+A fundamental reference for the present work is the former development of a CSG
+(called Combinatorial Geometry - CG - in their work) library for geometry construction
+of nuclear models. The \textit{OpenCG} library \cite{Boyd2015} is used by both
+\textit{OpenMC} \cite{openMC} and \textit{OpenMOC} softwares, developed in the sein
+of MIT's Computational Reactor Physics Group.
+
+\textit{OpenCG} has a wider and different set of applications than the
+software presented in this work. Its main objective - as attested by the authors -
+is to provide, among other applications, verification of results between transport
+codes. Put simple: \textit{OpenCG} is a way of generating complex
+combinatorial geometries once and have different input files generated for the main
+Monte Carlo nuclear codes thus allowing for verification.
+
+The objective of the present work is far more simple. Instead of generating the inputs for
+different codes, our program goes on the opposite direction, reading different
+inputs\footnote{At present only inputs for Serpent and MCNP.} and generating
+a 3D graphical model representing this geometry. The workflow of our code is presented
+in figure \ref{fig:workflow}.
+
 \section{Geometry in Serpent}
 
 As many Monte Carlo particle simulation codes, Serpent makes use of Computational Solid Geometry (CSG) to
