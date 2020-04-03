@@ -12,20 +12,21 @@ Graiciany Barros}
 
 I can cite my professor Claudio Esperanca\cite{Esperanca1990}.
 It is also worth citing the Los Alamos White Paper\cite{Spencer2017}.
-The paper of Boyd\cite{Boyd2015} presents a nice open software worth citing. In this paper, a new
+The paper of Boyd\cite{Boyd2015} presents a nice open software worth citing.
+In this paper (\textbf{which paper? The one of Boyd or this one I'm writing?}), a new
 library for CS (or CSG) graphic elements is described. The proposed work does not investigate better
 implementations or algoritms for CSG, but clear explanations of the algoritms used in general Monte Carlo
 codes are given. These algoritms and data structures can be used in the present work and allied to
 VTK.
 
-A fundamental decision is: use Python or C++ to implement this code? The former has the advantage of syntax. Moreover,
-this is an opportunite to gain knowledge in Python and all the tools related to it, like test modules and documentation
-modules. As a drawback, the examples of VTK are rarely provided in Python. C++, on the other hand, is far more complex
-to code but have many examples on VTK website. This is also a language I know and \textbf{need} to re-train on. The
-choice is pending over Python, but I'm not yet sure.
+The decision of which language to use was made: C++. I chose it over Python in order to make use of examples, try to polish
+my C++ and, I might be wrong here, but I think it is more straightful to use a C++ test tool. In the presente case, I'm starting
+to play with Gtest (Google Tests Framework)[cite].
 
 Another main issue before even starting to code: how \textbf{Serpent2} implements the geometry/elements functions. This
-can be the best reference for implementing the visualization software.
+can be the best reference for implementing the visualization software. \textbf{Answer:} well, this is no big deal. Since the
+implementation is not a CSG library, no need to provide the same operations of a truly CSG implementation. The ideia is to
+provide the operations needed to generated 3D models of Serpent input files, no matter it is a real CSG operation or not.
 
 \section{Introduction (Justification)}
 
@@ -92,7 +93,7 @@ describe the geometry of the elements being simulated. Serpent calls it: univers
 %of geometry is the cell, which is a region of space delimited by boundary 
 %surfaces. Cells are filled with 
 
-\subsection{How \textit{Serpent} define geometry?}
+\subsection{How \textit{Serpent} defines geometry?}
 
 Serpent has a simple yet powerful way of defining geometries. Serpent has 
 surfaces, cells and universes. In Serpent, surfaces can be elementary or 
@@ -141,16 +142,41 @@ scientific data. In the present case, this data is a set of geometrical
 primitives used to model the geometry of a real problem, specifically, a 
 nuclear reactor core.
 
-\section{TOUGHTS}
+%\begin{itemize}
+%    \item Something I'm wondering: once I can intersect and build elements like in Serpent/MCNP, should I make
+%      them polydata like unstructured grids?
+%    \item I maybe should try a first version of code in Python and then code the well-tought version in C++. This would make double the work, but I would practice both languages the way I want.
+%    \item Attention to messages marked as \textbf{important} in VTK users list, they might be useful to the future problems I'll face when implementing.
+%\end{itemize}
 
-\begin{itemize}
+\section{Methodology}
 
-    \item Something I'm wondering: once I can intersect and build elements like in Serpent/MCNP, should I make
-      them polydata like unstructured grids?
-    \item I maybe should try a first version of code in Python and then code the well-tought version in C++. This would make double the work, but I would practice both languages the way I want.
-    \item Attention to messages marked as \textbf{important} in VTK users list, they might be useful to the future problems I'll face when implementing.
-      
-\end{itemize}
+After giving the first try, i.e, having a working example using VTK with some data structures working, clipping functions and writing
+\textbf{vtk/vtm} files, it is possible to write some thoughs on how it started and might continue.
+
+The very basic region in a Serpent simulation is the \textit{universe}. This is simulation space and, in Serpent, can be a cube or a 3D hexagon.
+The first implementation builds a cubic \textit{vtkUnstructuredGrid} from a dimensions in x, y, and z. At this point, it is not even a function,
+but a loop. This loop builds a list of points stored as vtkPoints and the cells, which are hexahedras. Each cell made of 8 points. For now, the
+loop works for any number of cells in any directions. The next step is to make it a function or a class (need to think about it) and any methods
+it will provide. If it will only provide points/cells or it will hold the unstructured grid and give access to it. Need some thought.
+
+At this point, it is necessary to starting to think about tests. The general ideia of the algorithm too. The tests are not written, but their
+CMakeLists.txt file is written and they're compiled with the project. The Gtest is being used, but I must read about Ctests which are native
+to CMake.
+
+So, to organize the methodology:
+\begin{enumerate}
+
+\item Make the base geometry generator a function/class depeding on how the program will work;
+\item Write tests for this class. What to test and how to test.
+\item Establish coding standards (syntax) to be used.
+\item Read FOSS journal to check what is needed to publish with them.
+\item \textbf{Rewrite the code} the cleanest way possible and make it git controlled in \textbf{gitlab}\footnote{Use gitlab to be able to keep the code hidden until release (GPL, probably) and try to use gitlab test features ao automate tests.}
+\item Implement the parser for Serpent files.
+\end{enumerate}
+
+This visualizer has potential to be used also for MCNP so, would be a better bet to have a MCNP parser too before releasing the code. This will
+make better chances to be cited.
 
 \section{Examples of use}
 
