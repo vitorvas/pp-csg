@@ -15,44 +15,44 @@ It is also worth citing the Los Alamos White Paper\cite{Spencer2017}.
 The paper of Boyd\cite{Boyd2015} presents a nice open software worth citing.
 In this paper (\textbf{which paper? The one of Boyd or this one I'm writing?}), a new
 library for CS (or CSG) graphic elements is described. The proposed work does not investigate better
-implementations or algoritms for CSG, but clear explanations of the algoritms used in general Monte Carlo
-codes are given. These algoritms and data structures can be used in the present work and allied to
+implementations or algorithms for CSG, but clear explanations of the algorithms used in general Monte Carlo
+codes are given. These algorithms and data structures can be used in the present work and allied to
 VTK.
 
 The decision of which language to use was made: C++. I chose it over Python in order to make use of examples, try to polish
-my C++ and, I might be wrong here, but I think it is more straightful to use a C++ test tool. In the presente case, I'm starting
+my C++ and, I might be wrong here, but I think it is more straightforward to use a C++ test tool. In the present case, I'm starting
 to play with Gtest (Google Tests Framework)[cite].
 
 Another main issue before even starting to code: how \textbf{Serpent2} implements the geometry/elements functions. This
 can be the best reference for implementing the visualization software. \textbf{Answer:} well, this is no big deal. Since the
-implementation is not a CSG library, no need to provide the same operations of a truly CSG implementation. The ideia is to
+implementation is not a CSG library, no need to provide the same operations of a truly CSG implementation. The idea is to
 provide the operations needed to generated 3D models of Serpent input files, no matter it is a real CSG operation or not.
 
 \section{Introduction (Justification)}
 
 There is no question about the usefulness of Monte Carlo codes to the various
 fields of radiation applications, namely, nuclear physics, nuclear reactors,
-radioprotection, dosis assesment, among many others \cite[applications].
+radio-protection, doses assessment, among many others \cite[applications].
 
 A lot of time and energy were spent implementing algorithms intended to improve
 various aspects of the physics simulated by these codes. The most popular of
 them is MCNP\textregistered \cite{mcnp}, followed by Fluka\cite{fluka} and, more
 recently, Serpent\cite{Leppanen2015}. The latter, aimed mostly to criticality and neutron analysis.
 
-The maturity, robustness and aplicability of these codes cannot be questioned.
-However, since resources for sofware development are also a limited asset,
+The maturity, robustness and applicability of these codes cannot be questioned.
+However, since resources for software development are also a limited asset,
 usually these are applied to add new features concerning mostly the physical aspects of the software and the usability is usually neglected.
 
 The urgent need for a better form of software interaction related to MCNP
 is well presented by Spencer\cite{Spencer2017}, taking in account a set of gains that would emerge simply from the improvement of the way on how geometry definition is done for MCNP.
 
 Despite being a much younger software than MCNP, Serpent has at least one limitation common to MCNP: the description of the problem's geometry. This affirmation is by no means a criticism to its input standard, since it has a comprehensive form of geometry
-definition. Nervetheless, this does not mean neither that it cannot be improved.
+definition. Nevertheless, this does not mean neither that it cannot be improved.
 
-With that in mind, this paper presents a rather simple - and expectedly expansive -
+With that in mind, this paper presents a rather simple - and unexpectedly expansive -
 graphics user interface aimed to the visualization of Serpent's geometry input
 in 3D. This version generates VTK output files to be read and manipulated by
-the increasely present scientific visualization tool Paraview\cite{paraview}.
+the increasingly present scientific visualization tool Paraview\cite{paraview}.
 
 \section{Objective}
 
@@ -62,14 +62,14 @@ the increasely present scientific visualization tool Paraview\cite{paraview}.
 A fundamental reference for the present work is the former development of a CSG
 (called Combinatorial Geometry - CG - in their work) library for geometry construction
 of nuclear models. The \textit{OpenCG} library \cite{Boyd2015} is used by both
-\textit{OpenMC}\cite{Romano2015} and \textit{OpenMOC}\cite{Boyd2014} softwares, developed in the sein
-of MIT's Computational Reactor Physics Group.
+\textit{OpenMC}\cite{Romano2015} and \textit{OpenMOC}\cite{Boyd2014} software, developed by
+MIT's Computational Reactor Physics Group.
 
 \textit{OpenCG} has a wider and different set of applications than the
 software presented in this work. Its main objective - as attested by the authors -
 is to provide, among other applications, verification of results between transport
 codes. Put simple: \textit{OpenCG} is a way of generating complex
-combinatorial geometries once and have different input files generated for the main
+Combinatorial geometries once and have different input files generated for the main
 Monte Carlo nuclear codes thus allowing for verification.
 
 The objective of the present work is far more simple. Instead of generating the inputs for
@@ -78,10 +78,18 @@ inputs\footnote{At present only inputs for Serpent and MCNP.} and generating
 a 3D graphical model representing this geometry. The workflow of our code is presented
 in figure \ref{fig:workflow}.
 
+\section{Why do not use existent CSG libraries?}
+
+There are few open or free CSG libraries available (cite them). However, none of them were considered
+the best choice for this project. The reason is mainly simplicity: this project does not need to implement
+all the basics of CSG operations, but only those related to the geometries used by the nuclear codes
+source of data. Another reason is a bias in favor of VTK (cite), since it is the natural library of visualization
+of data in Paraview (cite), it has a solid community of users and is under constant development.
+
 \section{Geometry in Serpent}
 
-As many Monte Carlo particle simulation codes, Serpent makes use of Computational Solid Geometry (CSG) to
-describe the geometry of the elements being simulated. Serpent calls it: universe-based geometry modelling.
+As many Monte Carlo particle simulation codes, Serpent makes use of CSG to
+describe the geometry of the elements being simulated. Serpent calls it: universe-based geometry modeling.
 %Besides the conventional square and hexagonal lattices used in nuclear reactor %simulations, Serpent also
 %offers a special geometry type for the simulation of CANDU type reactors and also randomly-dispersed
 %particle fuels.
@@ -109,7 +117,7 @@ keyword used is \texttt{fill}.
 
 But a fundamental concept remains open: what is a universe? A universe is a "filling pattern". In other words, a universe is a domain covering the space where it is defined. Despite the awkward definition, a universe allow the geometry to 
 be divided into different separated levels. As a constraint, a universe must 
-cover all space in where it is defined. It is, by default, centred at the 
+cover all space in where it is defined. It is, by default, centered at the 
 origin and can be rotated and translated at the users will in order to allow 
 the construction of complex geometries.
 
@@ -131,12 +139,12 @@ Figure \ref{fig:lattice-example} shows a regular lattice [...].
 % Maybe make a table showing the possible surfaces, theis parameters
 % and a short description (image)
 
-\section{Features and limitations}
+\subsection{Features and limitations}
 
 \section{Development (libraries)}
 
 The chosen toolkit used to develop a visualization software for Serpent input 
-geometries is the Visualization Tookit (VTK)\cite{vtk}. It is an open-source, 
+geometries is the Visualization Toolkit (VTK)\cite{vtk}. It is an open-source, 
 freely available software system for, among other applications, visualization of 
 scientific data. In the present case, this data is a set of geometrical 
 primitives used to model the geometry of a real problem, specifically, a 
@@ -152,26 +160,26 @@ nuclear reactor core.
 \section{Methodology}
 
 After giving the first try, i.e, having a working example using VTK with some data structures working, clipping functions and writing
-\textbf{vtk/vtm} files, it is possible to write some thoughs on how it started and might continue.
+\textbf{vtk/vtm} files, it is possible to write some thoughts on how it started and might continue.
 
 The very basic region in a Serpent simulation is the \textit{universe}. This is simulation space and, in Serpent, can be a cube or a 3D hexagon.
 The first implementation builds a cubic \textit{vtkUnstructuredGrid} from a dimensions in x, y, and z. At this point, it is not even a function,
-but a loop. This loop builds a list of points stored as vtkPoints and the cells, which are hexahedras. Each cell made of 8 points. For now, the
+but a loop. This loop builds a list of points stored as vtkPoints and the cells, which are hexahedra. Each cell made of 8 points. For now, the
 loop works for any number of cells in any directions. The next step is to make it a function or a class (need to think about it) and any methods
 it will provide. If it will only provide points/cells or it will hold the unstructured grid and give access to it. Need some thought.
 
-At this point, it is necessary to starting to think about tests. The general ideia of the algorithm too. The tests are not written, but their
+At this point, it is necessary to starting to think about tests. The general idea of the algorithm too. The tests are not written, but their
 CMakeLists.txt file is written and they're compiled with the project. The Gtest is being used, but I must read about Ctests which are native
 to CMake.
 
 So, to organize the methodology:
 \begin{enumerate}
 
-\item Make the base geometry generator a function/class depeding on how the program will work;
+\item Make the base geometry generator a function/class depending on how the program will work;
 \item Write tests for this class. What to test and how to test.
 \item Establish coding standards (syntax) to be used.
 \item Read FOSS journal to check what is needed to publish with them.
-\item \textbf{Rewrite the code} the cleanest way possible and make it git controlled in \textbf{gitlab}\footnote{Use gitlab to be able to keep the code hidden until release (GPL, probably) and try to use gitlab test features ao automate tests.}
+\item \textbf{Rewrite the code} the cleanest way possible and make it git controlled in \textbf{gitlab}\footnote{Use gitlab to be able to keep the code hidden until release (GPL, probably) and try to use gitlab test features to automate tests.}
 \item Implement the parser for Serpent files.
 \end{enumerate}
 
